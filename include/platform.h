@@ -17,9 +17,8 @@ namespace ACJudge2
 #define Tsprintf wsprintf
 #define Tprintf wprintf
 #define Tscanf wscanf
-#define Tcin wcin
-#define Tcout wcout
-#define Tistringstream wistringstream
+#define Tcin std::wcin
+#define Tcout std::wcout
 
 	typedef std::wstring Tstring;
 	typedef std::wofstream Tofstream;

@@ -12,5 +12,6 @@ namespace ACJudge2
 
 	public:
 		web::json::value Score(web::json::value task, Submission submission) override;
+		OIScoring(Judge &judge) : IScoring(judge) {}
 	};
 }

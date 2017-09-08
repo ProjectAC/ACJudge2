@@ -1,11 +1,15 @@
 #include "../include/platform.h"
 #include "../include/Main.h"
 
-#if defined _WIN32
-int main(int argc, char *args[])
-#elif define __unix__
+using namespace ACJudge2;
 
+#if defined _WIN32
+int wmain(int argc, Tchar *args[])
+#elif define __unix__
+int main(int argc, char *args[])
 #endif
 {
-	ACJudge2::Main(T("sol-pic.com:"));
+	Main main(args[1]);
+
+	return 0;
 }

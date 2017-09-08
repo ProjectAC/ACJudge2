@@ -38,7 +38,7 @@ namespace ACJudge2
 	};
 
 	template<class T>
-	Tstring ACJudge2::toString(T obj)
+	Tstring toString(T obj)
 	{
 		TISStream s(obj);
 		Tstring res;
@@ -47,7 +47,7 @@ namespace ACJudge2
 	}
 
 	template<class T>
-	T ACJudge2::await(Concurrency::task<T> t)
+	T await(Concurrency::task<T> t)
 	{
 		t.wait();
 		return t.get();

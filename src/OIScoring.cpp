@@ -27,7 +27,8 @@ web::json::value OIScoring::JudgeSinglePoint(ID taskId, web::json::value info, T
 		return fail;
 	}
 
-	Sandbox::Run(Judge::GetRunCommand(userLang), time, memory, true, Judge::GetInputFile(taskId, inId), Judge::GetOutputFile(), Judge::GetErrorFile());
+	// TODO: ÆÀ²âµ¥Êý¾Ý
+	Sandbox().Run(judge.GetRunCommand(userLang), time, memory, true, judge.GetInputFile(taskId, inId), judge.GetOutputFile(), judge.GetErrorFile());
 }
 
 web::json::value OIScoring::Score(web::json::value task, Submission submission)

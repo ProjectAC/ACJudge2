@@ -28,17 +28,17 @@ void Main::Start()
 	subThread.detach();
 
 	Tstring cmd;
-	Tistringstream stream;
+	TISStream stream;
 	while (ctn)
 	{
 		Tcout << T(">> ") << endl;
 		getline(Tcin, cmd);
-		stream = Tistringstream(cmd);
+		stream = TISStream(cmd);
 		stream >> cmd;
 
 		if(cmd == T("help") || cmd == T("°ïÖú"))
 		{
-			
+			// TODO: Help
 		}
 		else if (cmd == T("exit") || cmd == T("ÍË³ö"))
 		{

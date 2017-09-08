@@ -11,20 +11,24 @@ namespace ACJudge2
 	class Judge
 	{
 	public:
+		/* Judge the certain Submission
+		
+		* submision: submission info from server
+		*/
 		web::json::value Run(Submission submission);
 
-		static Tstring GetTaskPath(ID taskId);
-		static Tstring GetBoxPath();
+		Tstring GetTaskPath(ID taskId);
+		Tstring GetBoxPath();
 
-		static Tstring GetInputFile(ID taskId, ID inId);
-		static Tstring GetOutputFile();
-		static Tstring GetAnswerFile(ID taskId, ID outId);
-		static Tstring GetErrorFile();
+		Tstring GetInputFile(ID taskId, ID inId);
+		Tstring GetOutputFile();
+		Tstring GetAnswerFile(ID taskId, ID outId);
+		Tstring GetErrorFile();
 
-		static Tstring GetRunCommand(Tstring language);
-		static Tstring GetCompareCommand(ID taskId, ID inId, ID outId, Tstring language);
-		static Tstring GetPrepareCommand(Tstring language);
-		static Tstring GetPrepareSpjCommand(ID taskID, Tstring language);
+		Tstring GetRunCommand(Tstring language);
+		Tstring GetCompareCommand(ID taskId, ID inId, ID outId, Tstring language);
+		Tstring GetPrepareCommand(Tstring language);
+		Tstring GetPrepareSpjCommand(ID taskID, Tstring language);
 
 		/* Command Loading
 

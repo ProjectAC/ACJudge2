@@ -142,7 +142,7 @@ bool Judge::PrepareSpj(Tstring taskId, Tstring lang)
 {
 	try
 	{
-		Sandbox::Run(GetPrepareSpjCommand(taskId, lang), 5000, INFINITE, false);
+		Sandbox().Run(GetPrepareSpjCommand(taskId, lang), 5000, INFINITE, false);
 	}
 	catch (Tstring s)
 	{
@@ -156,7 +156,7 @@ bool Judge::PrepareUserCode(Submission s)
 {
 	try
 	{
-		Sandbox::Run(GetPrepareCommand(s.language), 5000, INFINITE, false);
+		Sandbox().Run(GetPrepareCommand(s.language), 5000, INFINITE, false);
 	}
 	catch (exception e)
 	{
@@ -196,15 +196,15 @@ web::json::value Judge::Run(Submission submission)
 
 	if (type == T("OI"))
 	{
-		return OIScoring().Score(task, submission);
+		return OIScoring(*this).Score(task, submission);
 	}
 	else if (type == T("ACM"))
 	{
-		return OIScoring().Score(task, submission);
+		return OIScoring(*this).Score(task, submission);
 	}
 	else if (type == T("CF"))
 	{
-		return OIScoring().Score(task, submission);
+		return OIScoring(*this).Score(task, submission);
 	}
 	else
 	{

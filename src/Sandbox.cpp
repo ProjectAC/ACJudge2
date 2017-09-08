@@ -1,5 +1,3 @@
-#include "../include/platform.h"
-#include "../include/definitions.h"
 #include <iostream>
 #include <fstream>
 #include <cpprest/json.h>
@@ -8,7 +6,6 @@
 
 #if defined _WIN32
 
-#include <Windows.h>
 #include <Psapi.h>
 #pragma comment(lib, "Psapi.lib")
 
@@ -16,7 +13,7 @@ using namespace std;
 using namespace web;
 using namespace ACJudge2;
 
-JOBOBJECT_EXTENDED_LIMIT_INFORMATION Sandbox::SetLimits(Time time, Memory memory, bool restricted)
+JOBOBJECT_EXTENDED_LIMIT_INFORMATION Sandbox().SetLimits(Time time, Memory memory, bool restricted)
 {
 	JOBOBJECT_EXTENDED_LIMIT_INFORMATION ex_lim;
 
@@ -53,7 +50,7 @@ JOBOBJECT_EXTENDED_LIMIT_INFORMATION Sandbox::SetLimits(Time time, Memory memory
 	return ex_lim;
 }
 
-JOBOBJECT_BASIC_UI_RESTRICTIONS Sandbox::SetRulesUI(bool restricted)
+JOBOBJECT_BASIC_UI_RESTRICTIONS Sandbox().SetRulesUI(bool restricted)
 {
 	JOBOBJECT_BASIC_UI_RESTRICTIONS bs_ui;
 	bs_ui.UIRestrictionsClass = 0;
@@ -72,7 +69,7 @@ JOBOBJECT_BASIC_UI_RESTRICTIONS Sandbox::SetRulesUI(bool restricted)
 	return bs_ui;
 }
 
-STARTUPINFO Sandbox::Redirection(Tstring in, Tstring out, Tstring err)
+STARTUPINFO Sandbox().Redirection(Tstring in, Tstring out, Tstring err)
 {
 	SECURITY_ATTRIBUTES sa = { sizeof(SECURITY_ATTRIBUTES), NULL, TRUE };
 
@@ -120,7 +117,7 @@ STARTUPINFO Sandbox::Redirection(Tstring in, Tstring out, Tstring err)
 	return s;
 }
 
-Result Sandbox::Run(Tstring cmd, Time time, Memory memory, bool restricted, Tstring fin, Tstring fout, Tstring ferr)
+Result Sandbox().Run(Tstring cmd, Time time, Memory memory, bool restricted, Tstring fin, Tstring fout, Tstring ferr)
 {
 	// Initialize
 	JOBOBJECT_EXTENDED_LIMIT_INFORMATION ex_lim = SetLimits(time, memory, restricted);
@@ -163,7 +160,7 @@ Result Sandbox::Run(Tstring cmd, Time time, Memory memory, bool restricted, Tstr
 	if (!ret)
 	{
 		res.ret = ResultType::ERR;
-		res.msg = T("Error while creating subprocess, errcode = ") + toString(GetLastError());
+		res.msg = T("Error while creating subprocess, errcode = ") + ACJudge2::toString(GetLastError());
 		return res;
 	}
 
@@ -205,7 +202,7 @@ Result Sandbox::Run(Tstring cmd, Time time, Memory memory, bool restricted, Tstr
 		}
 		else if (res.val)  // ResultType value not zero
 		{
-			Tifstream fin(GetPath() + T("errlog"));
+			Tifstream fin(ferr);
 			getline(fin, res.msg, (Tchar)EOF);
 			res.ret = ResultType::RTE;
 		}
@@ -253,7 +250,7 @@ Result Sandbox::Run(Tstring cmd, Time time, Memory memory, bool restricted, Tstr
 using namespace std;
 using namespace ACJudge;
 
-ResultType Sandbox::set_time_limit(Time time)
+ResultType Sandbox().set_time_limit(Time time)
 {
 	Limit stime = time * 3;
 	ITimerVal time_limit;
@@ -281,7 +278,7 @@ ResultType Sandbox::set_time_limit(Time time)
 	return ResultType::OK;
 }
 
-ResultType Sandbox::set_space_limit(Memory memory)
+ResultType Sandbox().set_space_limit(Memory memory)
 {
 	// setrlimit
 	RLimit limit;
@@ -291,7 +288,7 @@ ResultType Sandbox::set_space_limit(Memory memory)
 	return ResultType::OK;
 }
 
-ResultType Sandbox::set_file(FILE *fp, Tstring file, Tstring mode)
+ResultType Sandbox().set_file(FILE *fp, Tstring file, Tstring mode)
 {
 	FILE *newfp;
 	file = get_path() + file;
@@ -302,7 +299,7 @@ ResultType Sandbox::set_file(FILE *fp, Tstring file, Tstring mode)
 	return ResultType::OK;
 }
 
-void Sandbox::start(Tstring file, Tchar *args[], Time time, Memory memory, bool restricted, Tstring fin, Tstring fout, Tstring ferr)
+void Sandbox().start(Tstring file, Tchar *args[], Time time, Memory memory, bool restricted, Tstring fin, Tstring fout, Tstring ferr)
 {
 	Tstring s = (file[0] == '.' ? get_path() + file : file);
 	Tchar *arguments[1000];
@@ -327,7 +324,7 @@ void Sandbox::start(Tstring file, Tchar *args[], Time time, Memory memory, bool 
 	}
 }
 
-ResultType Sandbox::redirection(Tstring in, Tstring out, Tstring err)
+ResultType Sandbox().redirection(Tstring in, Tstring out, Tstring err)
 {
 	if (in != T("") && set_file(stdin, in, T("r")) == ResultType::ERR)
 		return ResultType::ERR;
@@ -338,7 +335,7 @@ ResultType Sandbox::redirection(Tstring in, Tstring out, Tstring err)
 	return ResultType::OK;
 }
 
-ResultType Sandbox::set_limits(Time time, Memory memory)
+ResultType Sandbox().set_limits(Time time, Memory memory)
 {
 	if (time != INFINITE)
 		if (set_time_limit(time) == ResultType::ERR)
@@ -349,7 +346,7 @@ ResultType Sandbox::set_limits(Time time, Memory memory)
 	return ResultType::OK;
 }
 
-ResultType Sandbox::set_gid()
+ResultType Sandbox().set_gid()
 {
 	passwd *pwd = getpwnam("nobody");
 	const unsigned int groups[] = { pwd->pw_gid };
@@ -364,7 +361,7 @@ ResultType Sandbox::set_gid()
 	return ResultType::OK;
 }
 
-ResultType Sandbox::set_rules(Tstring file)
+ResultType Sandbox().set_rules(Tstring file)
 {
 	// White list
 	int whitelist[] = { SCMP_SYS(read), SCMP_SYS(fstat),
@@ -401,7 +398,7 @@ ResultType Sandbox::set_rules(Tstring file)
 	return ResultType::OK;
 }
 
-Result Sandbox::run(Tstring file, Tchar *args[], Time time, Memory memory, bool restricted, Tstring fin, Tstring fout, Tstring ferr)
+Result Sandbox().run(Tstring file, Tchar *args[], Time time, Memory memory, bool restricted, Tstring fin, Tstring fout, Tstring ferr)
 {
 	int starter;
 	int pid, status, signal, retval;
@@ -526,8 +523,3 @@ Result Sandbox::run(Tstring file, Tchar *args[], Time time, Memory memory, bool 
 }
 
 #endif
-
-Tstring Sandbox::GetPath()
-{
-	return Judge::GetBoxPath();
-}
